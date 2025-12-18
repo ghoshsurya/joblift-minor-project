@@ -3,8 +3,8 @@
 A comprehensive Django web application that helps job seekers optimize their CVs for Applicant Tracking Systems (ATS) and find relevant job opportunities using AI-powered analysis.
 
 ## 👥 Team Members
-- **Uttam Kumar Mahto** (Roll No. 15571024001)
-- **Suryakant Ghosh** (Roll No. 15571024020) 
+- **Suryakanta Ghosh** (Roll No. 15571024020)
+- **Uttam Kumar Mahto** (Roll No. 15571024001) 
 - **Jiten Paramanik** (Roll No. 15571024019)
 - **Subhadeep Gorai** (Roll No. 15571024018)
 
