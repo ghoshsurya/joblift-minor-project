@@ -25,9 +25,19 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_filter = ['is_read', 'created_at']
     search_fields = ['name', 'email', 'subject']
     readonly_fields = ['created_at']
+    
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['object_list'] = ContactMessage.objects.all().order_by('-created_at')
+        return super().changelist_view(request, extra_context)
 
 @admin.register(InterviewResource)
 class InterviewResourceAdmin(admin.ModelAdmin):
     list_display = ['title', 'resource_type', 'category', 'is_featured']
     list_filter = ['resource_type', 'category', 'is_featured']
     search_fields = ['title', 'description']
+    
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['object_list'] = InterviewResource.objects.all().order_by('-created_at')
+        return super().changelist_view(request, extra_context)

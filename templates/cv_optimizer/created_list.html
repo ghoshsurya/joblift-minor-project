@@ -41,6 +41,9 @@
                 <a href="{% url 'cv_optimizer:edit_created' cv.id %}" class="block w-full bg-gray-600 hover:bg-gray-700 text-white text-center py-2 rounded-lg">
                     <i class="fas fa-edit mr-2"></i>Edit CV
                 </a>
+                <button onclick="deleteCV({{ cv.id }}, '{{ cv.full_name }}')" class="block w-full bg-red-600 hover:bg-red-700 text-white text-center py-2 rounded-lg">
+                    <i class="fas fa-trash mr-2"></i>Delete CV
+                </button>
             </div>
         </div>
         {% empty %}
@@ -55,4 +58,26 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+function deleteCV(cvId, cvName) {
+    if (confirm(`Are you sure you want to delete the CV for "${cvName}"? This action cannot be undone.`)) {
+        // Create a form and submit it
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/cv/created/${cvId}/delete/`;
+        
+        // Add CSRF token
+        const csrfToken = '{{ csrf_token }}';
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = csrfToken;
+        form.appendChild(csrfInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
 {% endblock %}

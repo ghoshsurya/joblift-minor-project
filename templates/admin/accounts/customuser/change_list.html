@@ -1,0 +1,383 @@
+{% extends "admin/base_site.html" %}
+{% load admin_urls static %}
+
+{% block extrahead %}
+<style>
+* { box-sizing: border-box; }
+
+#content-main {
+    background: #f8fafc;
+    padding: 24px;
+    min-height: 100vh;
+}
+
+.page-header {
+    background: white;
+    padding: 24px 32px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 24px;
+    border-left: 4px solid #3b82f6;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.page-header .subtitle {
+    color: #6b7280;
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+.search-container {
+    background: white;
+    padding: 20px 32px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 24px;
+}
+
+.search-box {
+    position: relative;
+    max-width: 400px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 16px 12px 44px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+    background: #f9fafb;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 18px;
+}
+
+.table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.table-header {
+    background: #f8fafc;
+    padding: 20px 32px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.add-btn {
+    background: #10b981;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-btn:hover {
+    background: #059669;
+    color: white;
+    transform: translateY(-1px);
+}
+
+#result_list {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+#result_list th {
+    background: #f8fafc;
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#result_list td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+#result_list tbody tr {
+    transition: all 0.2s;
+}
+
+#result_list tbody tr:hover {
+    background: #f8fafc;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.user-email {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-active {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.experience-badge {
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-edit, .btn-delete {
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-edit {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.btn-edit:hover {
+    background: #bfdbfe;
+    color: #1d4ed8;
+}
+
+.btn-delete {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.btn-delete:hover {
+    background: #fecaca;
+    color: #dc2626;
+}
+
+.stats-footer {
+    background: #f8fafc;
+    padding: 16px 32px;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.checkbox-custom {
+    width: 18px;
+    height: 18px;
+    accent-color: #3b82f6;
+}
+
+.no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: #9ca3af;
+}
+
+.no-results-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+</style>
+
+<script>
+function filterUsers() {
+    var input = document.getElementById('searchbar');
+    var filter = input.value.toLowerCase();
+    var rows = document.querySelectorAll('#result_list tbody tr');
+    var count = 0;
+    
+    for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var text = row.textContent.toLowerCase();
+        
+        if (filter === '' || text.indexOf(filter) > -1) {
+            row.style.display = '';
+            count++;
+        } else {
+            row.style.display = 'none';
+        }
+    }
+    
+    var countElements = document.querySelectorAll('.user-count');
+    for (var j = 0; j < countElements.length; j++) {
+        countElements[j].textContent = count;
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <div class="page-header">
+        <h1>User Management</h1>
+        <div class="subtitle">Manage all registered users and their profiles</div>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchbar" placeholder="Search users by name, email, or role..." onkeyup="filterUsers()">
+        </div>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <div class="table-title">All Users (<span class="user-count">{{ object_list|length }}</span>)</div>
+            <a href="{% url 'admin:accounts_customuser_add' %}" class="add-btn">
+                ➕ Add New User
+            </a>
+        </div>
+
+        <table id="result_list">
+            <thead>
+                <tr>
+                    <th width="50">
+                        <input type="checkbox" id="action-toggle" class="checkbox-custom">
+                    </th>
+                    <th width="80">ID</th>
+                    <th>User</th>
+                    <th>Contact</th>
+                    <th>Role & Experience</th>
+                    <th width="100">Status</th>
+                    <th width="120">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in object_list %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="_selected_action" value="{{ user.pk }}" class="checkbox-custom">
+                    </td>
+                    <td>
+                        <strong>#{{ user.id }}</strong>
+                    </td>
+                    <td>
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                {{ user.username|first|upper }}
+                            </div>
+                            <div>
+                                <div class="user-name">{{ user.first_name }} {{ user.last_name|default:user.username }}</div>
+                                <div class="user-email">{{ user.email }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>📞 {{ user.phone|default:"Not provided" }}</div>
+                    </td>
+                    <td>
+                        <div>💼 {{ user.preferred_job_role|default:"Not specified" }}</div>
+                        <div class="experience-badge">{{ user.get_experience_level_display }}</div>
+                    </td>
+                    <td>
+                        {% if user.is_active %}
+                            <span class="status-badge status-active">✓ Active</span>
+                        {% else %}
+                            <span class="status-badge status-inactive">✗ Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'admin:accounts_customuser_change' user.pk %}" class="btn-edit">Edit</a>
+                            <a href="{% url 'admin:accounts_customuser_delete' user.pk %}" class="btn-delete">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="no-results">
+                        <div class="no-results-icon">👥</div>
+                        <div>No users found</div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="stats-footer">
+            Showing <strong class="user-count">{{ object_list|length }}</strong> user{{ object_list|length|pluralize }} • Last updated: {{ "now"|date:"M d, Y H:i" }}
+        </div>
+    </div>
+</div>
+{% endblock %}

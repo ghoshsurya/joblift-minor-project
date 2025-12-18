@@ -28,6 +28,7 @@ urlpatterns = [
     path('created/<int:cv_id>/', views.CreatedCVDetailView.as_view(), name='created_detail'),
     path('created/<int:cv_id>/download/', views.DownloadCreatedCVView.as_view(), name='download_created'),
     path('created/<int:cv_id>/edit/', views.EditCreatedCVView.as_view(), name='edit_created'),
+    path('created/<int:cv_id>/delete/', views.DeleteCreatedCVView.as_view(), name='delete_created'),
     path('template/<int:template_id>/preview/', views.TemplatePreviewView.as_view(), name='template_preview'),
     path('latex-editor/', views.LaTeXEditorView.as_view(), name='latex_editor'),
     path('latex/compile/', latex_compiler_new.CompileLaTeXView.as_view(), name='compile_latex'),

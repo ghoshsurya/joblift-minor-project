@@ -1,0 +1,102 @@
+{% extends "admin/base_site.html" %}
+{% load admin_urls static %}
+
+{% block content %}
+<div id="content-main">
+    <div class="page-header">
+        <h1>Interview Resources Management</h1>
+        <div class="subtitle">Manage interview preparation resources and materials</div>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <div class="table-title">All Interview Resources ({{ object_list|length }})</div>
+            <a href="{% url 'admin:core_interviewresource_add' %}" class="add-btn">
+                ➕ Add Resource
+            </a>
+        </div>
+
+        <table id="result_list">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>URL</th>
+                    <th>Featured</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in object_list %}
+                <tr>
+                    <td><strong>#{{ resource.id }}</strong></td>
+                    <td>
+                        <div style="font-weight: 600;">{{ resource.title }}</div>
+                        <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">{{ resource.description|truncatechars:60 }}</div>
+                    </td>
+                    <td>
+                        <span style="background: {% if resource.resource_type == 'article' %}#dbeafe; color: #1d4ed8{% elif resource.resource_type == 'video' %}#fef3c7; color: #92400e{% elif resource.resource_type == 'practice' %}#d1fae5; color: #065f46{% else %}#f3e8ff; color: #7c3aed{% endif %}; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">
+                            {% if resource.resource_type == 'article' %}📄 Article
+                            {% elif resource.resource_type == 'video' %}🎥 Video
+                            {% elif resource.resource_type == 'practice' %}💪 Practice
+                            {% else %}💡 Tips
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">
+                            {{ resource.category }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ resource.url }}" target="_blank" style="color: #3b82f6; text-decoration: none;">
+                            🔗 Open Link
+                        </a>
+                    </td>
+                    <td>
+                        {% if resource.is_featured %}
+                            <span style="background: #fef3c7; color: #92400e; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">
+                                ⭐ Featured
+                            </span>
+                        {% else %}
+                            <span style="color: #9ca3af;">Regular</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ resource.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="{% url 'admin:core_interviewresource_change' resource.pk %}" class="btn-edit">Edit</a>
+                        <a href="{% url 'admin:core_interviewresource_delete' resource.pk %}" class="btn-delete">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 20px;">No interview resources found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+#content-main { background: #f8fafc; padding: 24px; }
+.page-header { background: white; padding: 24px 32px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 24px; border-left: 4px solid #3b82f6; }
+.page-header h1 { margin: 0; font-size: 28px; font-weight: 600; color: #1f2937; }
+.page-header .subtitle { color: #6b7280; margin-top: 4px; font-size: 14px; }
+.table-container { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+.table-header { background: #f8fafc; padding: 20px 32px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+.table-title { font-size: 18px; font-weight: 600; color: #1f2937; }
+.add-btn { background: #10b981; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 500; }
+.add-btn:hover { background: #059669; color: white; }
+#result_list { width: 100%; border-collapse: collapse; }
+#result_list th { background: #f8fafc; padding: 16px 20px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb; font-size: 13px; }
+#result_list td { padding: 16px 20px; border-bottom: 1px solid #f3f4f6; }
+#result_list tbody tr:hover { background: #f8fafc; }
+.btn-edit, .btn-delete { padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 500; margin-right: 8px; }
+.btn-edit { background: #dbeafe; color: #1d4ed8; }
+.btn-delete { background: #fee2e2; color: #dc2626; }
+</style>
+{% endblock %}

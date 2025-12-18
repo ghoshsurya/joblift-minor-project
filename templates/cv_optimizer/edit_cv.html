@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit CV - ATS Optimizer{% endblock %}
+
+{% block content %}
+<style>
+.edit-cv-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.edit-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.edit-header {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.edit-header h4 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.edit-body {
+    padding: 40px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #f9fafb;
+}
+
+.form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background: white;
+    outline: none;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    background: #6b7280;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+    color: white;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+</style>
+
+<div class="edit-cv-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="edit-card">
+                    <div class="edit-header">
+                        <h4>✏️ Edit CV: {{ cv.full_name }}</h4>
+                    </div>
+                    <div class="edit-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">👤 Full Name</label>
+                                        <input type="text" name="full_name" class="form-control" value="{{ cv.full_name }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">📧 Email</label>
+                                        <input type="email" name="email" class="form-control" value="{{ cv.email }}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">📞 Phone</label>
+                                        <input type="text" name="phone" class="form-control" value="{{ cv.phone }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">🔗 LinkedIn URL</label>
+                                        <input type="url" name="linkedin_url" class="form-control" value="{{ cv.linkedin_url }}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">📍 Address</label>
+                                <textarea name="address" class="form-control" rows="3">{{ cv.address }}</textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">💼 Professional Summary</label>
+                                <textarea name="professional_summary" class="form-control" rows="4">{{ cv.professional_summary }}</textarea>
+                            </div>
+                            
+                            <div class="button-group">
+                                <button type="submit" class="btn btn-primary">💾 Update CV</button>
+                                <a href="{% url 'cv_optimizer:created_detail' cv.id %}" class="btn btn-secondary">❌ Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -176,14 +176,21 @@ class CVBuilderView(LoginRequiredMixin, CreateView):
     form_class = CVCreationForm
     template_name = 'cv_optimizer/cv_builder.html'
     
+    def form_invalid(self, form):
+        print(f"Form is invalid. Errors: {form.errors}")
+        print(f"POST data: {self.request.POST}")
+        return super().form_invalid(form)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['template'] = get_object_or_404(CVTemplate, id=self.kwargs['template_id'])
         return context
     
     def form_valid(self, form):
+        print(f"Form is valid. POST data: {self.request.POST}")
         form.instance.user = self.request.user
         form.instance.template = get_object_or_404(CVTemplate, id=self.kwargs['template_id'])
+        print(f"Template found: {form.instance.template.name}")
         
         # Process dynamic form data
         experience = []
@@ -228,7 +235,13 @@ class CVBuilderView(LoginRequiredMixin, CreateView):
         form.instance.education = education
         form.instance.skills = skills
         
-        return super().form_valid(form)
+        try:
+            result = super().form_valid(form)
+            print(f"CV created successfully with ID: {self.object.id}")
+            return result
+        except Exception as e:
+            print(f"Error creating CV: {e}")
+            raise
     
     def get_success_url(self):
         return reverse_lazy('cv_optimizer:created_detail', kwargs={'cv_id': self.object.id})
@@ -278,6 +291,34 @@ class EditCreatedCVView(LoginRequiredMixin, DetailView):
     
     def get_queryset(self):
         return CreatedCV.objects.filter(user=self.request.user)
+    
+    def post(self, request, *args, **kwargs):
+        cv = self.get_object()
+        
+        # Update CV fields
+        cv.full_name = request.POST.get('full_name', cv.full_name)
+        cv.email = request.POST.get('email', cv.email)
+        cv.phone = request.POST.get('phone', cv.phone)
+        cv.address = request.POST.get('address', cv.address)
+        cv.linkedin_url = request.POST.get('linkedin_url', cv.linkedin_url)
+        cv.portfolio_url = request.POST.get('portfolio_url', cv.portfolio_url)
+        cv.professional_summary = request.POST.get('professional_summary', cv.professional_summary)
+        
+        cv.save()
+        messages.success(request, 'CV updated successfully!')
+        return redirect('cv_optimizer:created_detail', cv_id=cv.id)
+
+class DeleteCreatedCVView(LoginRequiredMixin, DeleteView):
+    model = CreatedCV
+    pk_url_kwarg = 'cv_id'
+    success_url = reverse_lazy('cv_optimizer:created_list')
+    
+    def get_queryset(self):
+        return CreatedCV.objects.filter(user=self.request.user)
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'CV deleted successfully!')
+        return super().delete(request, *args, **kwargs)
 
 class TemplatePreviewView(DetailView):
     model = CVTemplate

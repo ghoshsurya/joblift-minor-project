@@ -8,6 +8,11 @@ class CVUploadAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__email', 'job_role')
     readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
+    
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['object_list'] = CVUpload.objects.all().order_by('-created_at')
+        return super().changelist_view(request, extra_context)
 
 @admin.register(ATSKeyword)
 class ATSKeywordAdmin(admin.ModelAdmin):
@@ -15,6 +20,11 @@ class ATSKeywordAdmin(admin.ModelAdmin):
     list_filter = ('category',)
     search_fields = ('keyword', 'category')
     ordering = ('category', 'keyword')
+    
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['object_list'] = ATSKeyword.objects.all().order_by('category', 'keyword')
+        return super().changelist_view(request, extra_context)
 
 @admin.register(CVTemplate)
 class CVTemplateAdmin(admin.ModelAdmin):

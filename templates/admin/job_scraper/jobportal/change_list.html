@@ -1,0 +1,85 @@
+{% extends "admin/base_site.html" %}
+{% load admin_urls static %}
+
+{% block content %}
+<div id="content-main">
+    <div class="page-header">
+        <h1>Job Portals Management</h1>
+        <div class="subtitle">Manage job scraping portals and their configurations</div>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <div class="table-title">All Job Portals ({{ object_list|length }})</div>
+            <a href="{% url 'admin:job_scraper_jobportal_add' %}" class="add-btn">
+                ➕ Add Job Portal
+            </a>
+        </div>
+
+        <table id="result_list">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Portal Name</th>
+                    <th>Base URL</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for portal in object_list %}
+                <tr>
+                    <td><strong>#{{ portal.id }}</strong></td>
+                    <td>
+                        <div style="font-weight: 600; font-size: 16px;">{{ portal.name }}</div>
+                    </td>
+                    <td>
+                        <a href="{{ portal.base_url }}" target="_blank" style="color: #3b82f6; text-decoration: none;">
+                            🌐 {{ portal.base_url|truncatechars:50 }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if portal.is_active %}
+                            <span style="background: #d1fae5; color: #065f46; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">
+                                ✓ Active
+                            </span>
+                        {% else %}
+                            <span style="background: #fee2e2; color: #991b1b; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">
+                                ✗ Inactive
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'admin:job_scraper_jobportal_change' portal.pk %}" class="btn-edit">Edit</a>
+                        <a href="{% url 'admin:job_scraper_jobportal_delete' portal.pk %}" class="btn-delete">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 20px;">No job portals found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+#content-main { background: #f8fafc; padding: 24px; }
+.page-header { background: white; padding: 24px 32px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 24px; border-left: 4px solid #3b82f6; }
+.page-header h1 { margin: 0; font-size: 28px; font-weight: 600; color: #1f2937; }
+.page-header .subtitle { color: #6b7280; margin-top: 4px; font-size: 14px; }
+.table-container { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+.table-header { background: #f8fafc; padding: 20px 32px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+.table-title { font-size: 18px; font-weight: 600; color: #1f2937; }
+.add-btn { background: #10b981; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 500; }
+.add-btn:hover { background: #059669; color: white; }
+#result_list { width: 100%; border-collapse: collapse; }
+#result_list th { background: #f8fafc; padding: 16px 20px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb; }
+#result_list td { padding: 16px 20px; border-bottom: 1px solid #f3f4f6; }
+#result_list tbody tr:hover { background: #f8fafc; }
+.btn-edit, .btn-delete { padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 500; margin-right: 8px; }
+.btn-edit { background: #dbeafe; color: #1d4ed8; }
+.btn-delete { background: #fee2e2; color: #dc2626; }
+</style>
+{% endblock %}

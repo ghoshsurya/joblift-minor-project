@@ -1,78 +1,151 @@
-# ATS-Friendly CV Optimizer and Smart Job Hunting Assistant
+# 🚀 JobLift - ATS-Friendly CV Optimizer & Smart Job Hunting Assistant
 
-A comprehensive Django web application that helps job seekers optimize their CVs for Applicant Tracking Systems (ATS) and find relevant job opportunities.
+A comprehensive Django web application that helps job seekers optimize their CVs for Applicant Tracking Systems (ATS) and find relevant job opportunities using AI-powered analysis.
 
-## Team Members
-- Uttam Kumar Mahto (Roll No. 15571024001)
-- Suryakant Ghosh (Roll No. 15571024020)
-- Jiten Paramanik (Roll No. 15571024019)
-- Subhadeep Gorai (Roll No. 15571024018)
+## 👥 Team Members
+- **Uttam Kumar Mahto** (Roll No. 15571024001)
+- **Suryakant Ghosh** (Roll No. 15571024020) 
+- **Jiten Paramanik** (Roll No. 15571024019)
+- **Subhadeep Gorai** (Roll No. 15571024018)
 
-## Features
+## ✨ Features
 
 ### 🔍 CV Analysis & Optimization
 - Upload CV in PDF, DOC, or DOCX format
-- Get detailed ATS compatibility score
+- AI-powered ATS compatibility analysis using Google Gemini
+- Get detailed ATS score (0-100%)
 - Receive personalized improvement suggestions
 - Download optimized ATS-friendly CV
 
 ### 💼 Smart Job Search
-- Search jobs from multiple portals
-- Filter by location, job type, and experience
-- Get job recommendations based on profile
-- Set up job alerts for matching opportunities
+- Real-time job scraping from multiple portals (Naukri, Indeed, LinkedIn, Monster)
+- Advanced filtering by location, job type, and experience
+- Get job recommendations based on your profile
+- Set up personalized job alerts
 
-### 📊 Dashboard & Analytics
-- Track CV performance over time
-- View analysis history
-- Monitor improvement progress
-- Quick access to all features
+### 📊 CV Builder & Templates
+- 14+ professional CV templates (Modern, Classic, Creative, Minimal)
+- Interactive CV builder with real-time preview
+- LaTeX editor for advanced customization
+- PDF generation with professional formatting
 
 ### 🎯 Additional Features
-- Dark/Light theme toggle
+- Modern admin panel with custom UI
+- Dark/Light theme support
 - Responsive design for all devices
-- Modern admin panel
 - Interview preparation resources
 - User authentication & profiles
+- Real-time search functionality
 
-## Technology Stack
+## 🛠️ Technology Stack
 
 ### Backend
 - **Django 4.2.7** - Web framework
 - **Django REST Framework** - API development
-- **SQLite** - Database (can be switched to PostgreSQL)
-- **Celery** - Background tasks
-- **Redis** - Caching and message broker
+- **SQLite** - Database (production-ready)
+- **Google Gemini AI** - CV analysis and optimization
 
 ### Frontend
 - **Bootstrap 5.3** - CSS framework
 - **JavaScript (ES6+)** - Interactive features
 - **Font Awesome** - Icons
-- **Google Fonts** - Typography
+- **Custom CSS** - Modern UI/UX
 
 ### CV Processing
 - **PyPDF2** - PDF text extraction
 - **python-docx** - Word document processing
-- **NLTK** - Natural language processing
+- **ReportLab** - PDF generation
 - **BeautifulSoup** - Web scraping
 
-## Installation & Setup
+## 📁 Project Structure
 
-### Prerequisites
-- Python 3.8+
-- pip (Python package manager)
-
-### 1. Clone the Repository
-```bash
-git clone <repository-url>
-cd "MINOR PROJECT"
+```
+MINOR PROJECT/
+├── ats_optimizer/          # Main Django project settings
+│   ├── __init__.py
+│   ├── settings.py         # Project configuration
+│   ├── urls.py            # Main URL routing
+│   ├── wsgi.py            # WSGI configuration
+│   └── asgi.py            # ASGI configuration
+│
+├── accounts/               # User authentication & profiles
+│   ├── models.py          # CustomUser model
+│   ├── views.py           # Auth views
+│   ├── forms.py           # User forms
+│   ├── urls.py            # Auth URLs
+│   └── admin.py           # User admin
+│
+├── cv_optimizer/           # CV analysis & optimization
+│   ├── models.py          # CV, Template, Keyword models
+│   ├── views.py           # CV processing views
+│   ├── forms.py           # CV forms
+│   ├── utils.py           # CV analysis utilities
+│   ├── gemini_service.py  # AI analysis service
+│   ├── job_matcher.py     # Job matching logic
+│   ├── latex_compiler_new.py # LaTeX compilation
+│   └── pdf_generator.py   # PDF generation
+│
+├── job_scraper/           # Job search & scraping
+│   ├── models.py          # Job, Portal, Alert models
+│   ├── views.py           # Job search views
+│   ├── real_scraper.py    # Real-time job scraping
+│   ├── api_views.py       # Job search API
+│   └── forms.py           # Job search forms
+│
+├── core/                  # Core functionality & pages
+│   ├── models.py          # Hero, Contact, Resource models
+│   ├── views.py           # Core page views
+│   ├── admin_views.py     # Custom admin views
+│   └── urls.py            # Core URLs
+│
+├── templates/             # HTML templates
+│   ├── base.html          # Base template
+│   ├── accounts/          # Auth templates
+│   ├── cv_optimizer/      # CV templates
+│   ├── job_scraper/       # Job search templates
+│   ├── core/              # Core page templates
+│   └── admin/             # Custom admin templates
+│
+├── static/                # Static files (CSS, JS, Images)
+│   ├── css/style.css      # Main stylesheet
+│   └── js/main.js         # Main JavaScript
+│
+├── media/                 # User uploaded files
+│   ├── cvs/original/      # Original CV uploads
+│   ├── created_cvs/       # Generated CVs
+│   ├── latex_pdfs/        # LaTeX compiled PDFs
+│   └── profiles/          # Profile pictures
+│
+├── .env                   # Environment variables
+├── requirements.txt       # Python dependencies
+├── manage.py             # Django management script
+├── db.sqlite3            # SQLite database
+├── setup.bat             # Windows setup script
+└── start_server.bat      # Server start script
 ```
 
-### 2. Create Virtual Environment
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.8+ installed
+- Git installed
+
+### 1. Clone Repository
 ```bash
+git clone https://github.com/ghoshsurya/joblift-minor-project.git
+cd joblift-minor-project
+```
+
+### 2. Setup Environment
+```bash
+# Create virtual environment
 python -m venv venv
-venv\Scripts\activate  # On Windows
-# source venv/bin/activate  # On macOS/Linux
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
 ```
 
 ### 3. Install Dependencies
@@ -81,11 +154,12 @@ pip install -r requirements.txt
 ```
 
 ### 4. Environment Configuration
-Create a `.env` file in the root directory:
+Create `.env` file in root directory:
 ```env
 SECRET_KEY=your-secret-key-here
 DEBUG=True
 DATABASE_URL=sqlite:///db.sqlite3
+GEMINI_API_KEY=your-gemini-api-key
 ```
 
 ### 5. Database Setup
@@ -97,7 +171,7 @@ python manage.py createsuperuser
 
 ### 6. Collect Static Files
 ```bash
-python manage.py collectstatic
+python manage.py collectstatic --noinput
 ```
 
 ### 7. Run Development Server
@@ -105,106 +179,139 @@ python manage.py collectstatic
 python manage.py runserver
 ```
 
-Visit `http://127.0.0.1:8000` to access the application.
+### 8. Access Application
+- **Main Site**: http://127.0.0.1:8000/
+- **Admin Panel**: http://127.0.0.1:8000/admin/
+- **API Documentation**: http://127.0.0.1:8000/api/
 
-## Project Structure
-
-```
-MINOR PROJECT/
-├── ats_optimizer/          # Main project settings
-├── accounts/               # User authentication & profiles
-├── cv_optimizer/           # CV analysis & optimization
-├── job_scraper/           # Job search & scraping
-├── core/                  # Core functionality & pages
-├── templates/             # HTML templates
-├── static/               # CSS, JS, images
-├── media/                # User uploaded files
-├── requirements.txt      # Python dependencies
-└── manage.py            # Django management script
-```
-
-## Key Functionalities
+## 🎯 Key Functionalities
 
 ### CV Analysis Process
 1. **Text Extraction**: Extract text from uploaded CV files
-2. **Keyword Matching**: Compare CV content with job-specific keywords
-3. **Structure Analysis**: Check for essential CV sections
-4. **Score Calculation**: Generate ATS compatibility score (0-100%)
-5. **Suggestions**: Provide actionable improvement recommendations
+2. **AI Analysis**: Analyze content using Google Gemini AI
+3. **ATS Scoring**: Generate compatibility score (0-100%)
+4. **Improvement Suggestions**: Provide actionable recommendations
+5. **Optimization**: Generate optimized CV content
 
 ### Job Scraping
-- Scrapes job listings from popular job portals
-- Filters recent jobs (within last 24 hours)
-- Stores job data with company, location, and requirements
-- Provides job recommendations based on user profile
+- Real-time scraping from major job portals
+- Intelligent filtering and deduplication
+- Job matching based on user profile
+- Automated job alerts via email
 
-### User Experience
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Dark/Light Mode**: Toggle between themes
-- **Drag & Drop**: Easy file upload interface
-- **Real-time Updates**: AJAX-powered interactions
-- **Progressive Enhancement**: Works without JavaScript
+### CV Builder
+- Template-based CV creation
+- Dynamic form handling for experience/education
+- LaTeX compilation for professional output
+- PDF generation with custom styling
 
-## Admin Panel Features
+## 🔧 Configuration
 
-Access the admin panel at `/admin/` with superuser credentials:
+### Gemini AI Setup
+1. Get API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Add to `.env` file: `GEMINI_API_KEY=your-key-here`
 
-- **User Management**: View and manage user accounts
-- **CV Analytics**: Monitor CV uploads and scores
-- **Job Management**: Manage job listings and portals
-- **Content Management**: Update resources and messages
-- **System Monitoring**: Track application usage
+### Admin Panel Access
+- Create superuser: `python manage.py createsuperuser`
+- Access at: `/admin/`
+- Features: User management, CV analytics, Job monitoring
 
-## API Endpoints
+## 📊 API Endpoints
 
-The application provides REST API endpoints for:
-- CV upload and analysis
-- Job search and filtering
-- User profile management
-- Job alerts and notifications
+### CV Operations
+- `POST /cv/upload/` - Upload CV for analysis
+- `GET /cv/analyze/<id>/` - Get analysis results
+- `GET /cv/download/<id>/` - Download optimized CV
 
-## Security Features
+### Job Search
+- `GET /jobs/search/` - Search jobs with filters
+- `POST /jobs/alerts/` - Create job alert
+- `GET /api/realtime-search/` - Real-time job search
 
-- **CSRF Protection**: All forms protected against CSRF attacks
-- **File Validation**: Secure file upload with type and size validation
-- **User Authentication**: Secure login/logout functionality
-- **Permission Control**: Role-based access control
-- **Data Sanitization**: Input validation and sanitization
+### User Management
+- `POST /accounts/register/` - User registration
+- `POST /accounts/login/` - User login
+- `GET /accounts/profile/` - User profile
 
-## Performance Optimizations
+## 🎨 UI/UX Features
 
-- **Static File Compression**: Whitenoise for static file serving
-- **Database Optimization**: Efficient queries with select_related
-- **Caching**: Redis caching for frequently accessed data
-- **Lazy Loading**: Optimized image and content loading
+### Modern Design
+- Gradient backgrounds and modern cards
+- Smooth animations and transitions
+- Responsive grid layouts
+- Dark/Light theme support
 
-## Future Enhancements
+### Interactive Elements
+- Real-time search with instant filtering
+- Drag & drop file uploads
+- Dynamic form fields
+- Progress indicators
 
-- **AI-Powered Optimization**: Advanced ML models for CV improvement
-- **LinkedIn Integration**: Import profile data from LinkedIn
-- **Real-time Notifications**: WebSocket-based job alerts
-- **Mobile App**: React Native mobile application
-- **Multi-language Support**: Internationalization support
-- **Advanced Analytics**: Detailed performance metrics
+### Admin Interface
+- Custom admin templates with modern styling
+- Enhanced data visualization
+- Bulk operations support
+- Advanced filtering and search
 
-## Contributing
+## 🔒 Security Features
+
+- **CSRF Protection**: All forms protected
+- **File Validation**: Secure upload validation
+- **User Authentication**: Session-based auth
+- **Permission Control**: Role-based access
+- **Data Sanitization**: Input validation
+
+## 📈 Performance Optimizations
+
+- **Static File Compression**: Whitenoise integration
+- **Database Optimization**: Efficient queries
+- **Lazy Loading**: Optimized content loading
+- **Caching**: Strategic caching implementation
+
+## 🚀 Deployment
+
+### Production Setup
+1. Set `DEBUG=False` in `.env`
+2. Configure production database
+3. Set up static file serving
+4. Configure domain and SSL
+
+### Environment Variables
+```env
+SECRET_KEY=production-secret-key
+DEBUG=False
+ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+DATABASE_URL=postgresql://user:pass@host:port/dbname
+GEMINI_API_KEY=your-gemini-api-key
+```
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-feature`)
+2. Create feature branch (`git checkout -b feature/new-feature`)
 3. Commit changes (`git commit -am 'Add new feature'`)
 4. Push to branch (`git push origin feature/new-feature`)
 5. Create Pull Request
 
-## License
+## 📝 License
 
 This project is developed as part of an academic minor project and is intended for educational purposes.
 
-## Support
+## 📞 Support
 
-For support and queries, contact the development team:
-- Email: team@atsoptimizer.com
-- GitHub Issues: Create an issue in the repository
+For support and queries:
+- **Email**: team@joblift.com
+- **GitHub Issues**: [Create an issue](https://github.com/ghoshsurya/joblift-minor-project/issues)
+
+## 🏆 Acknowledgments
+
+- Google Gemini AI for CV analysis
+- Bootstrap team for UI framework
+- Django community for the excellent framework
+- All contributors and testers
 
 ---
 
-**Made with ❤️ by Team ATS**
+**Made with ❤️ by Team JobLift**
+
+*Empowering job seekers with AI-powered CV optimization and smart job hunting tools.*

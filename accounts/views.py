@@ -5,8 +5,42 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, TemplateView
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.http import HttpResponse
 from .models import CustomUser
 from .forms import CustomUserCreationForm, CustomUserChangeForm
+
+def admin_users_list(request):
+    if not request.user.is_staff:
+        return redirect('/admin/')
+    
+    users = CustomUser.objects.all()
+    html = """
+    <h1>All Users</h1>
+    <table border="1" style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <th>ID</th><th>Username</th><th>Email</th><th>First Name</th><th>Last Name</th>
+            <th>Phone</th><th>Job Role</th><th>Experience</th><th>Active</th><th>Staff</th>
+        </tr>
+    """
+    
+    for user in users:
+        html += f"""
+        <tr>
+            <td>{user.id}</td>
+            <td><a href="/admin/accounts/customuser/{user.id}/change/">{user.username}</a></td>
+            <td>{user.email}</td>
+            <td>{user.first_name}</td>
+            <td>{user.last_name}</td>
+            <td>{user.phone or ''}</td>
+            <td>{user.preferred_job_role or ''}</td>
+            <td>{user.experience_level}</td>
+            <td>{'Yes' if user.is_active else 'No'}</td>
+            <td>{'Yes' if user.is_staff else 'No'}</td>
+        </tr>
+        """
+    
+    html += "</table>"
+    return HttpResponse(html)
 
 class RegisterView(CreateView):
     model = CustomUser
